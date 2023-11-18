@@ -6,6 +6,8 @@ from datetime import datetime
 from ultralytics import YOLO
 import pandas as pd
 from PIL import Image
+import matplotlib.pyplot as plt
+
 
 # Variables Globales y Configuraciones
 SIZE = (WIDTH, HEIGHT) = (640, 480)
@@ -128,6 +130,14 @@ def playAlert(cls):
     elif cls == 'away':
         play_sound_async(ruta + 'Alerta_6.mp3')
 
+def plot_distractions():
+    data = pd.read_csv('data.csv')
+    filtered_data = data[data['class'] != 'Unknown']
+    plt.figure(figsize=(10, 6))
+    filtered_data['class'].value_counts().plot(kind='bar')
+    plt.subplots_adjust(bottom=0.15)
+    
+    plt.savefig('distracciones.png')
 
 # Código Principal
 if __name__ == "__main__":
@@ -158,12 +168,11 @@ if __name__ == "__main__":
         cv2.imshow('frame', frame)
         frames += 1
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            plot_distractions()
             break
     cap.release()
     cv2.destroyAllWindows()
     df.to_csv('data.csv', index=False)
 
-    def plot_distractions():
-        data = pd.read_csv('data.csv')
-        data['class'].value_counts().plot(kind='bar')
-    plot_distractions()
+ 
+   
