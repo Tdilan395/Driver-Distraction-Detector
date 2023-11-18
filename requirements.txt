@@ -1,0 +1,7 @@
+pygame
+opencv-python
+numpy
+Pillow
+ultralytics
+gtts
+pandas
